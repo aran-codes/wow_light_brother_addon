@@ -1,0 +1,13 @@
+## Interface: 120000
+## Title: PaladinComms
+## Notes: Talk to fellow paladins running the addon over a hidden addon-only channel, and channel the Light with random brotherly flavor.
+## Author: aran-codes
+## Version: 1.0.0
+## SavedVariables: PaladinCommsDB
+## IconTexture: Interface\Icons\Spell_Holy_HolyBolt
+## X-Category: Chat & Communication
+
+Config.lua
+Flavor.lua
+Comms.lua
+Core.lua
