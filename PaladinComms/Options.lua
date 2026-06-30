@@ -292,6 +292,7 @@ function Options:Open()
     end
 
     if InterfaceOptionsFrame_OpenToCategory and self.panel then
+        -- Legacy clients sometimes need this called twice before the panel is focused.
         InterfaceOptionsFrame_OpenToCategory(self.panel)
         InterfaceOptionsFrame_OpenToCategory(self.panel)
     end

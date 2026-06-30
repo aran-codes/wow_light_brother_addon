@@ -23,7 +23,9 @@ local defaults = {
 }
 
 local function ApplyDefaults(db, src)
-    db = db or {}
+    if db == nil then
+        db = {}
+    end
     for k, v in pairs(src) do
         if type(v) == "table" then
             db[k] = ApplyDefaults(type(db[k]) == "table" and db[k] or {}, v)

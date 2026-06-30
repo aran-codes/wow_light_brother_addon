@@ -6,7 +6,7 @@ PaladinComms is a lightweight World of Warcraft addon for paladin-only addon cha
 
 This repository already has the correct addon folder inside it: `PaladinComms/`.
 
-### 1) Copy the addon folder into WoW
+### 1) Copy the addon folder into World of Warcraft
 
 Copy **the inner `PaladinComms` folder** so your final install looks like this:
 
