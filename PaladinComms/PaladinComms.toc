@@ -10,4 +10,6 @@
 Config.lua
 Flavor.lua
 Comms.lua
+Options.lua
+Minimap.lua
 Core.lua

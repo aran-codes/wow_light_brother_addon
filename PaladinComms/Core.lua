@@ -12,15 +12,22 @@ PC.isPaladin  = false
 local defaults = {
     enabled        = true,
     flavorEnabled  = true,
-    flavorChance   = 0.06,   -- 6% chance per eligible event
-    flavorCooldown = 90,     -- seconds between flavor lines
+    flavorChance   = 0.15,   -- 15% chance per eligible event
+    flavorCooldown = 45,     -- seconds between flavor lines
     flavorChannel  = "EMOTE",-- EMOTE | SAY | SELF (chat frame only)
     announceJoin   = true,   -- greet the paladin network on login
+    minimap        = {
+        hide  = false,
+        angle = 225,
+    },
 }
 
 local function ApplyDefaults(db, src)
+    db = db or {}
     for k, v in pairs(src) do
-        if db[k] == nil then
+        if type(v) == "table" then
+            db[k] = ApplyDefaults(type(db[k]) == "table" and db[k] or {}, v)
+        elseif db[k] == nil then
             db[k] = v
         end
     end
@@ -52,6 +59,8 @@ frame:SetScript("OnEvent", function(_, event, ...)
 
         if PC.Comms and PC.Comms.Init then PC.Comms:Init() end
         if PC.Flavor and PC.Flavor.Init then PC.Flavor:Init() end
+        if PC.Options and PC.Options.Init then PC.Options:Init() end
+        if PC.Minimap and PC.Minimap.Init then PC.Minimap:Init() end
 
         if PC.isPaladin then
             PC:Print("Online. The Light guides our words. Type |cffffd100/pc|r for options.")
