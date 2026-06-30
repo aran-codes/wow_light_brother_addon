@@ -68,11 +68,9 @@ local function MakeSlider(parent, label, field, minVal, maxVal, step, displayMul
     sl:SetValueStep(step)
     sl:SetObeyStepOnDrag(true)
 
-    -- Template creates _Low/_High/_Text children.
-    local low  = _G[sl:GetName() and sl:GetName() .. "Low"]  or container:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-    local high = _G[sl:GetName() and sl:GetName() .. "High"] or container:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-    if low  and low.SetText  then low:SetText(tostring(minVal) .. (suffix or ""))  end
-    if high and high.SetText then high:SetText(tostring(maxVal) .. (suffix or "")) end
+    -- Template creates Low/High/Text children accessible as sl.Low / sl.High.
+    if sl.Low  and sl.Low.SetText  then sl.Low:SetText(tostring(minVal) .. (suffix or ""))   end
+    if sl.High and sl.High.SetText then sl.High:SetText(tostring(maxVal) .. (suffix or "")) end
 
     local valLabel = container:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
     valLabel:SetPoint("TOPLEFT", sl, "BOTTOMLEFT", 0, -2)

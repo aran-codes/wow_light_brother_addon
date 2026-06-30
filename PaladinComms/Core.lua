@@ -23,8 +23,12 @@ local function ApplyDefaults(db, src)
     for k, v in pairs(src) do
         if db[k] == nil then
             db[k] = v
-        elseif type(v) == "table" and type(db[k]) == "table" then
-            -- Recursively merge nested tables (e.g. minimap).
+        elseif type(v) == "table" then
+            -- If the saved value exists but is not a table, reset it to a fresh
+            -- copy of the default so nested keys (e.g. minimap.angle) are present.
+            if type(db[k]) ~= "table" then
+                db[k] = {}
+            end
             ApplyDefaults(db[k], v)
         end
     end
