@@ -12,8 +12,8 @@ PC.isPaladin  = false
 local defaults = {
     enabled        = true,
     flavorEnabled  = true,
-    flavorChance   = 0.06,   -- 6% chance per eligible event
-    flavorCooldown = 90,     -- seconds between flavor lines
+    flavorChance   = 0.15,   -- 15% chance per eligible event
+    flavorCooldown = 45,     -- seconds between flavor lines
     flavorChannel  = "EMOTE",-- EMOTE | SAY | SELF (chat frame only)
     announceJoin   = true,   -- greet the paladin network on login
 }
