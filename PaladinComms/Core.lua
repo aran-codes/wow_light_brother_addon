@@ -16,12 +16,16 @@ local defaults = {
     flavorCooldown = 90,     -- seconds between flavor lines
     flavorChannel  = "EMOTE",-- EMOTE | SAY | SELF (chat frame only)
     announceJoin   = true,   -- greet the paladin network on login
+    minimap        = { angle = 200, hide = false },
 }
 
 local function ApplyDefaults(db, src)
     for k, v in pairs(src) do
         if db[k] == nil then
             db[k] = v
+        elseif type(v) == "table" and type(db[k]) == "table" then
+            -- Recursively merge nested tables (e.g. minimap).
+            ApplyDefaults(db[k], v)
         end
     end
     return db
@@ -52,6 +56,8 @@ frame:SetScript("OnEvent", function(_, event, ...)
 
         if PC.Comms and PC.Comms.Init then PC.Comms:Init() end
         if PC.Flavor and PC.Flavor.Init then PC.Flavor:Init() end
+        if PC.Options and PC.Options.Init then PC.Options:Init() end
+        if PC.Minimap and PC.Minimap.Init then PC.Minimap:Init() end
 
         if PC.isPaladin then
             PC:Print("Online. The Light guides our words. Type |cffffd100/pc|r for options.")

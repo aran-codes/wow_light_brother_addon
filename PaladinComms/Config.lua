@@ -16,6 +16,8 @@ local function usage()
     PC:Print("  |cffffd100/pc chance <1-100>|r -- flavor chance per event (percent)")
     PC:Print("  |cffffd100/pc toggle|r       -- enable/disable the whole addon")
     PC:Print("  |cffffd100/pc status|r       -- show current settings")
+    PC:Print("  |cffffd100/pc config|r       -- open the Settings panel (alias: /pc options)")
+    PC:Print("  |cffffd100/pc minimap show|hide|r -- show or hide the minimap button")
 end
 
 function Config:HandleSlash(msg)
@@ -78,6 +80,29 @@ function Config:HandleSlash(msg)
         PC:Print(("  flavor chance:  %d%%"):format(math.floor((PC.db.flavorChance or 0) * 100 + 0.5)))
         PC:Print(("  flavor cd:      %ds"):format(PC.db.flavorCooldown or 0))
         PC:Print("  is paladin:     " .. tostring(PC.isPaladin))
+
+    elseif cmd == "config" or cmd == "options" then
+        if PC.Options and PC.Options.Open then
+            PC.Options:Open()
+        else
+            PC:Print("Settings panel not available yet. Use |cffffd100/pc help|r for slash commands.")
+        end
+
+    elseif cmd == "minimap" then
+        local v = rest:lower()
+        if v == "show" then
+            if PC.Minimap and PC.Minimap.SetShown then
+                PC.Minimap:SetShown(true)
+                PC:Print("Minimap button: |cff80ff80shown|r")
+            end
+        elseif v == "hide" then
+            if PC.Minimap and PC.Minimap.SetShown then
+                PC.Minimap:SetShown(false)
+                PC:Print("Minimap button: |cffff6060hidden|r")
+            end
+        else
+            PC:Print("Use |cffffd100/pc minimap show|r or |cffffd100/pc minimap hide|r")
+        end
 
     else
         -- Anything else is treated as a message to broadcast to paladins.
