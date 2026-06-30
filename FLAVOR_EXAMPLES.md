@@ -181,14 +181,10 @@ T+0s    Paladin pulls a pack — combat starts.
 T+15s   Paladin kills the first enemy.
         Event: COMBAT_LOG_EVENT_UNFILTERED (PARTY_KILL, player is source)
               → Flavor:Maybe("kill")
-        Cooldown: 15s since last spoke (0s) — 15 < 90 → BLOCKED.
-        Wait, lastSpoke is 0 so (15 - 0 = 15) ... actually lastSpoke starts at 0
-        and GetTime() starts counting from login, so the first eligible event
-        passes the cooldown immediately after login.
+        Cooldown: lastSpoke is 0 (no line ever spoken). GetTime() is already
+        hundreds of seconds since login, so (now - 0) >> 90 → PASSES.
         Roll: math.random() = 0.03  |  threshold: 0.06
         0.03 <= 0.06 → PASSES.
-        Cooldown: (15 - 0) = 15 seconds since last spoke — actually on the
-        very first line lastSpoke=0 so it always passes.
         Picks from kill pool → "Cleansed by the Light."
         Speaks: /emote Cleansed by the Light.
         lastSpoke = T+15s
