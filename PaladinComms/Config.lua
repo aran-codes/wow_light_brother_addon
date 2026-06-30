@@ -11,9 +11,12 @@ local function usage()
     PC:Print("  |cffffd100/pc <message>|r  -- say something to all paladins running the addon")
     PC:Print("  |cffffd100/pc who|r         -- list paladins currently online")
     PC:Print("  |cffffd100/pc light|r       -- channel a random Light line right now")
+    PC:Print("  |cffffd100/pc config|r      -- open the PaladinComms settings panel")
     PC:Print("  |cffffd100/pc flavor on|off|r -- toggle random flavor lines")
     PC:Print("  |cffffd100/pc channel say|emote|self|r -- where flavor lines go")
     PC:Print("  |cffffd100/pc chance <1-100>|r -- flavor chance per event (percent)")
+    PC:Print("  |cffffd100/pc cooldown <10-300>|r -- flavor cooldown in seconds")
+    PC:Print("  |cffffd100/pc minimap show|hide|r -- show or hide the minimap button")
     PC:Print("  |cffffd100/pc toggle|r       -- enable/disable the whole addon")
     PC:Print("  |cffffd100/pc status|r       -- show current settings")
 end
@@ -26,6 +29,13 @@ function Config:HandleSlash(msg)
 
     if cmd == "" or cmd == "help" then
         usage()
+
+    elseif cmd == "config" then
+        if PC.Options and PC.Options.Open then
+            PC.Options:Open()
+        else
+            PC:Print("|cffff6060Settings are not available on this client yet.|r")
+        end
 
     elseif cmd == "who" or cmd == "online" then
         local online = PC.Comms:GetOnline()
@@ -66,6 +76,32 @@ function Config:HandleSlash(msg)
             PC:Print("Use |cffffd100/pc chance <1-100>|r")
         end
 
+    elseif cmd == "cooldown" then
+        local n = tonumber(rest)
+        if n and n >= 10 and n <= 300 then
+            n = math.floor((n / 5) + 0.5) * 5
+            PC.db.flavorCooldown = n
+            PC:Print(("Flavor cooldown set to |cffffd100%d|r seconds."):format(n))
+        else
+            PC:Print("Use |cffffd100/pc cooldown <10-300>|r")
+        end
+
+    elseif cmd == "minimap" then
+        local v = rest:lower()
+        if v == "show" then
+            if PC.Minimap and PC.Minimap.SetHidden then
+                PC.Minimap:SetHidden(false)
+            end
+            PC:Print("Minimap button: |cff80ff80SHOWN|r")
+        elseif v == "hide" then
+            if PC.Minimap and PC.Minimap.SetHidden then
+                PC.Minimap:SetHidden(true)
+            end
+            PC:Print("Minimap button: |cffff6060HIDDEN|r")
+        else
+            PC:Print("Use |cffffd100/pc minimap show|r or |cffffd100/pc minimap hide|r")
+        end
+
     elseif cmd == "toggle" then
         PC.db.enabled = not PC.db.enabled
         PC:Print("Addon is now " .. (PC.db.enabled and "|cff80ff80ENABLED|r" or "|cffff6060DISABLED|r"))
@@ -77,6 +113,7 @@ function Config:HandleSlash(msg)
         PC:Print("  flavor channel: " .. tostring(PC.db.flavorChannel))
         PC:Print(("  flavor chance:  %d%%"):format(math.floor((PC.db.flavorChance or 0) * 100 + 0.5)))
         PC:Print(("  flavor cd:      %ds"):format(PC.db.flavorCooldown or 0))
+        PC:Print("  minimap shown:  " .. tostring(not (PC.db.minimap and PC.db.minimap.hide)))
         PC:Print("  is paladin:     " .. tostring(PC.isPaladin))
 
     else

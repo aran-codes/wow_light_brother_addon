@@ -79,8 +79,8 @@ function Flavor:Maybe(context)
     if not PC.db.enabled or not PC.db.flavorEnabled then return end
 
     local now = GetTime()
-    if now - self.lastSpoke < (PC.db.flavorCooldown or 90) then return end
-    if math.random() > (PC.db.flavorChance or 0.06) then return end
+    if now - self.lastSpoke < (PC.db.flavorCooldown or 45) then return end
+    if math.random() > (PC.db.flavorChance or 0.15) then return end
 
     local pool = self.lines[context] or self.lines.generic
     local line = Pick(pool) or Pick(self.lines.generic)
